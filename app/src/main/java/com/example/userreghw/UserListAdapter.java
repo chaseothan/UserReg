@@ -17,6 +17,7 @@ public class UserListAdapter extends BaseAdapter
     Context context;
     ArrayList<User> userList;
 
+
     public UserListAdapter(Context c, ArrayList<User> ls)
     {
         context = c;

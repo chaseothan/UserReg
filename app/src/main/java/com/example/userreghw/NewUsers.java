@@ -45,11 +45,9 @@ public class NewUsers extends AppCompatActivity {
         btn_j_users_back = findViewById(R.id.btn_v_users_back);
         int_j_mainActivityIntent = new Intent(NewUsers.this, MainActivity.class);
 
-        userList = new ArrayList<User>();
-
         dbHelper = new DatabaseHelper(this);
 
-        dbHelper.initializeDB();
+
 
         userList = dbHelper.getAllRows();
 
@@ -85,7 +83,7 @@ public class NewUsers extends AppCompatActivity {
                 String p = et_j_users_password.getText().toString();
                 String a = et_j_users_age.getText().toString();
 
-                User newUser = new User(u, f, l, e, p, a);
+                User newUser = new User(f, l, u, e, p, a);
 
                 addNewUser(newUser);
 
@@ -109,8 +107,8 @@ public class NewUsers extends AppCompatActivity {
 
         if(!et_j_users_fName.getText().toString().equals("") && !et_j_users_lName.getText().toString().equals("") && !et_j_users_username.getText().toString().equals("") && !et_j_users_email.getText().toString().equals("") && !et_j_users_password.getText().toString().equals("") && !et_j_users_age.getText().toString().equals(""))
         {
-            userList.add(u);
             dbHelper.addNewUser(u);
+            Log.d("HERE", dbHelper.numberOfRowsInTable() + "");
 
         }
     }

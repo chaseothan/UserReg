@@ -1,6 +1,8 @@
 package com.example.userreghw;
 
-public class User
+import java.io.Serializable;
+
+public class User implements Serializable
 {
 
     private String fName;

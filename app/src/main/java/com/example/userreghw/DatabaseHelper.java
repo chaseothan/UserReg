@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context)
     {
-        super(context, DATABASE_NAME, null, 2);
+        super(context, DATABASE_NAME, null, 5);
     }
 
     @Override
@@ -95,11 +95,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do
             {
 
-                username = cursor.getString(cursor.getColumnIndex("username"));
-
                 fname = cursor.getString(cursor.getColumnIndex("firstname"));
 
                 lName = cursor.getString(cursor.getColumnIndex("lastname"));
+
+                username = cursor.getString(cursor.getColumnIndex("username"));
 
                 email = cursor.getString(cursor.getColumnIndex("email"));
 
@@ -108,7 +108,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 age = cursor.getString(cursor.getColumnIndex("age"));
 
 
-                listUsers.add(new User(username, fname, lName, email, password, age));
+                listUsers.add(new User(fname, lName, username, email, password, age));
 
             }
             while(cursor.moveToNext());
@@ -131,5 +131,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     }
+
+    @SuppressLint("Range")
+    public ArrayList<String> getAllUsernames()
+    {
+        ArrayList<String> usernames = new ArrayList<String>();
+
+
+        String selectUserNames = "SELECT username FROM " + TABLE_NAME + " ORDER BY username;";
+
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery(selectUserNames, null);
+
+        String username;
+
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                username = cursor.getString(cursor.getColumnIndex("username"));
+
+                usernames.add(username);
+            }
+            while(cursor.moveToNext());
+        }
+        db.close();
+
+        return usernames;
+    }
+    public void deleteUser(String uName)
+    {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE username = '" + uName + "';");
+
+        db.close();
+    }
+
+    public void updateUser(User u)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String updateCommand = "UPDATE " + TABLE_NAME + " SET firstname = '" + u.getfName() + "' , lastname = '" + u.getlName() + "' , email = '" + u.getEmail() + "' , password = '" + u.getPassword() + "' , age = '" + u.getAge() + "' WHERE username = '" + u.getUsername() +"';";
+        db.execSQL(updateCommand);
+        db.close();
+    }
+
+
 
 }
